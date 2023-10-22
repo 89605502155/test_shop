@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_USER=${POSTGRES_USERNAME}
+      - PGADMIN_DEFAULT_EMAIL=${PG_ADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PG_ADMIN_PASSWORD}
+
+    ports:
+      - ${PG_ADMIN_PORT_ONE}:${PG_ADMIN_PORT_TWO}
